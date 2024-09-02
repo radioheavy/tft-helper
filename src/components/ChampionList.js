@@ -9,7 +9,6 @@ import {
   Image,
   Badge,
   Tooltip,
-  useColorModeValue,
   VStack,
   HStack,
   IconButton,
@@ -33,25 +32,30 @@ import {
 import { InfoIcon, SearchIcon, StarIcon } from '@chakra-ui/icons';
 import tftData from '../data/tftData';
 
+// TFT temalı renk paleti
+const tftColors = {
+  primary: "#C4973B",
+  secondary: "#17A1BE",
+  accent: "#73428F",
+  background: "#0A0D13",
+  cardBg: "#181C24",
+  text: "#E5E5E5",
+};
+
 const poolSizes = { 1: 29, 2: 22, 3: 18, 4: 12, 5: 10 };
 
 function ChampionCard({ champion, onFavorite, isFavorite }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const bgColor = useColorModeValue('white', 'gray.700');
-  const borderColor = useColorModeValue('gray.200', 'gray.600');
-  const textColor = useColorModeValue('gray.800', 'white');
-  const headerBgColor = useColorModeValue('blue.500', 'blue.200');
-  const headerTextColor = useColorModeValue('white', 'gray.800');
 
   return (
     <>
       <Box
-        bg={bgColor}
-        borderWidth="1px"
-        borderColor={borderColor}
+        bg={tftColors.cardBg}
+        borderWidth="2px"
+        borderColor={tftColors.primary}
         borderRadius="lg"
         overflow="hidden"
-        _hover={{ shadow: 'md' }}
+        _hover={{ shadow: 'lg', borderColor: tftColors.secondary }}
         transition="all 0.3s"
         position="relative"
       >
@@ -64,9 +68,9 @@ function ChampionCard({ champion, onFavorite, isFavorite }) {
           fallbackSrc="/champion-icons/default.png"
         />
         <VStack p={2} align="start">
-          <Heading size="sm" color={textColor}>{champion.name}</Heading>
+          <Heading size="sm" color={tftColors.primary}>{champion.name}</Heading>
           <HStack>
-            <Badge colorScheme={['gray', 'green', 'blue', 'purple', 'yellow'][champion.cost - 1]}>
+            <Badge bg={tftColors.secondary} color={tftColors.text}>
               {champion.cost} Cost
             </Badge>
             <IconButton
@@ -74,6 +78,9 @@ function ChampionCard({ champion, onFavorite, isFavorite }) {
               icon={<InfoIcon />}
               size="sm"
               onClick={onOpen}
+              bg={tftColors.accent}
+              color={tftColors.text}
+              _hover={{ bg: tftColors.secondary }}
             />
             <IconButton
               aria-label="Favorite"
@@ -86,7 +93,7 @@ function ChampionCard({ champion, onFavorite, isFavorite }) {
         </VStack>
         <Wrap position="absolute" top={1} left={1}>
           {champion.traits.map(trait => (
-            <Tag key={trait} size="sm" variant="solid" colorScheme="teal">
+            <Tag key={trait} size="sm" bg={tftColors.accent} color={tftColors.text}>
               {trait}
             </Tag>
           ))}
@@ -95,9 +102,9 @@ function ChampionCard({ champion, onFavorite, isFavorite }) {
 
       <Drawer isOpen={isOpen} placement="right" onClose={onClose} size="md">
         <DrawerOverlay />
-        <DrawerContent>
-          <DrawerCloseButton />
-          <DrawerHeader bg={headerBgColor} color={headerTextColor}>
+        <DrawerContent bg={tftColors.background}>
+          <DrawerCloseButton color={tftColors.text} />
+          <DrawerHeader bg={tftColors.primary} color={tftColors.text}>
             <Flex align="center">
               <Image
                 src={`/champion-icons/${champion.name}.png`}
@@ -113,9 +120,9 @@ function ChampionCard({ champion, onFavorite, isFavorite }) {
             </Flex>
           </DrawerHeader>
           <DrawerBody>
-            <VStack align="start" spacing={6} color={textColor}>
+            <VStack align="start" spacing={6} color={tftColors.text}>
               <Box width="100%">
-                <Heading size="sm" mb={2}>Stats</Heading>
+                <Heading size="sm" mb={2} color={tftColors.secondary}>Stats</Heading>
                 <SimpleGrid columns={2} spacing={4}>
                   <Stat>
                     <StatLabel>Cost</StatLabel>
@@ -128,13 +135,13 @@ function ChampionCard({ champion, onFavorite, isFavorite }) {
                 </SimpleGrid>
               </Box>
 
-              <Divider />
+              <Divider borderColor={tftColors.accent} />
 
               <Box width="100%">
-                <Heading size="sm" mb={2}>Traits</Heading>
+                <Heading size="sm" mb={2} color={tftColors.secondary}>Traits</Heading>
                 <Wrap>
                   {champion.traits.map(trait => (
-                    <Tag key={trait} size="md" variant="solid" colorScheme="teal">
+                    <Tag key={trait} size="md" bg={tftColors.accent} color={tftColors.text}>
                       {trait}
                     </Tag>
                   ))}
@@ -142,32 +149,32 @@ function ChampionCard({ champion, onFavorite, isFavorite }) {
               </Box>
 
               <Box width="100%">
-                <Heading size="sm" mb={2}>Classes</Heading>
+                <Heading size="sm" mb={2} color={tftColors.secondary}>Classes</Heading>
                 <Wrap>
                   {champion.classes.map(cls => (
-                    <Tag key={cls} size="md" variant="solid" colorScheme="purple">
+                    <Tag key={cls} size="md" bg={tftColors.secondary} color={tftColors.text}>
                       {cls}
                     </Tag>
                   ))}
                 </Wrap>
               </Box>
 
-              <Divider />
+              <Divider borderColor={tftColors.accent} />
 
               <Box width="100%">
-                <Heading size="sm" mb={2}>Ability: {champion.ability.name}</Heading>
+                <Heading size="sm" mb={2} color={tftColors.secondary}>Ability: {champion.ability.name}</Heading>
                 <Text>{champion.ability.description}</Text>
               </Box>
 
-              <Divider />
+              <Divider borderColor={tftColors.accent} />
 
               <Box width="100%">
-                <Heading size="sm" mb={2}>Recommended Items</Heading>
+                <Heading size="sm" mb={2} color={tftColors.secondary}>Recommended Items</Heading>
                 <Wrap>
                   {/* Bu kısım örnek amaçlıdır, gerçek veriyle değiştirilmelidir */}
-                  <Tag size="md" variant="solid" colorScheme="blue">Item 1</Tag>
-                  <Tag size="md" variant="solid" colorScheme="blue">Item 2</Tag>
-                  <Tag size="md" variant="solid" colorScheme="blue">Item 3</Tag>
+                  <Tag size="md" bg={tftColors.primary} color={tftColors.text}>Item 1</Tag>
+                  <Tag size="md" bg={tftColors.primary} color={tftColors.text}>Item 2</Tag>
+                  <Tag size="md" bg={tftColors.primary} color={tftColors.text}>Item 3</Tag>
                 </Wrap>
               </Box>
             </VStack>
@@ -230,30 +237,54 @@ function ChampionList() {
   }, [toast]);
 
   return (
-    <Box maxWidth="1200px" margin="auto" p={5}>
-      <Heading as="h1" size="2xl" mb={6} textAlign="center">TFT Champion Gallery</Heading>
+    <Box maxWidth="1200px" margin="auto" p={5} bg={tftColors.background}>
+      <Heading as="h1" size="2xl" mb={6} textAlign="center" color={tftColors.primary}>TFT Champion Gallery</Heading>
       
       <VStack spacing={4} mb={8}>
         <Input
           placeholder="Search champions..."
           value={filter}
           onChange={(e) => setFilter(e.target.value)}
-          leftElement={<SearchIcon color="gray.500" />}
+          leftElement={<SearchIcon color={tftColors.text} />}
+          bg={tftColors.cardBg}
+          color={tftColors.text}
+          borderColor={tftColors.accent}
         />
         <HStack width="100%">
-          <Select placeholder="Filter by Trait" value={traitFilter} onChange={(e) => setTraitFilter(e.target.value)}>
+          <Select 
+            placeholder="Filter by Trait" 
+            value={traitFilter} 
+            onChange={(e) => setTraitFilter(e.target.value)}
+            bg={tftColors.cardBg}
+            color={tftColors.text}
+            borderColor={tftColors.accent}
+          >
             <option value="">All Traits</option>
             {allTraits.map(trait => (
               <option key={trait} value={trait}>{trait}</option>
             ))}
           </Select>
-          <Select placeholder="Filter by Class" value={classFilter} onChange={(e) => setClassFilter(e.target.value)}>
+          <Select 
+            placeholder="Filter by Class" 
+            value={classFilter} 
+            onChange={(e) => setClassFilter(e.target.value)}
+            bg={tftColors.cardBg}
+            color={tftColors.text}
+            borderColor={tftColors.accent}
+          >
             <option value="">All Classes</option>
             {allClasses.map(cls => (
               <option key={cls} value={cls}>{cls}</option>
             ))}
           </Select>
-          <Select placeholder="Filter by Cost" value={costFilter} onChange={(e) => setCostFilter(e.target.value)}>
+          <Select 
+            placeholder="Filter by Cost" 
+            value={costFilter} 
+            onChange={(e) => setCostFilter(e.target.value)}
+            bg={tftColors.cardBg}
+            color={tftColors.text}
+            borderColor={tftColors.accent}
+          >
             <option value="">All Costs</option>
             {[1, 2, 3, 4, 5].map(cost => (
               <option key={cost} value={cost}>{cost} Cost</option>
@@ -262,7 +293,9 @@ function ChampionList() {
         </HStack>
         <Button 
           onClick={() => setShowFavorites(!showFavorites)}
-          colorScheme={showFavorites ? "yellow" : "gray"}
+          bg={showFavorites ? tftColors.primary : tftColors.cardBg}
+          color={tftColors.text}
+          _hover={{ bg: tftColors.secondary }}
         >
           {showFavorites ? "Show All Champions" : "Show Favorites"}
         </Button>
@@ -280,7 +313,7 @@ function ChampionList() {
       </SimpleGrid>
 
       {filteredChampions.length === 0 && (
-        <Text textAlign="center" fontSize="xl" mt={10}>
+        <Text textAlign="center" fontSize="xl" mt={10} color={tftColors.text}>
           No champions found matching your criteria.
         </Text>
       )}

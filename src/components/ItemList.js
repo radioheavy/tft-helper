@@ -24,6 +24,16 @@ import {
   Divider
 } from '@chakra-ui/react';
 
+// TFT temalı renk paleti
+const tftColors = {
+  primary: "#C4973B",
+  secondary: "#17A1BE",
+  accent: "#73428F",
+  background: "#0A0D13",
+  cardBg: "#181C24",
+  text: "#E5E5E5",
+};
+
 const baseItems = [
   { name: 'B.F. Sword', stat: '+10% Attack Damage', image: '/images/items/bf-sword.webp', description: 'A mighty sword that boosts your attack damage.' },
   { name: 'Chain Vest', stat: '+20 Armor', image: '/images/items/chain-vest.webp', description: 'A sturdy vest that increases your armor.' },
@@ -42,6 +52,9 @@ function ItemCard({ item, onOpen }) {
       onClick={() => onOpen(item)} 
       cursor="pointer" 
       _hover={{ transform: 'scale(1.05)', transition: 'transform 0.2s' }}
+      bg={tftColors.cardBg}
+      borderColor={tftColors.primary}
+      borderWidth="2px"
     >
       <CardBody>
         <VStack align="start" spacing={2}>
@@ -51,8 +64,8 @@ function ItemCard({ item, onOpen }) {
             boxSize="50px"
             objectFit="cover"
           />
-          <Heading size="md">{item.name}</Heading>
-          <Badge colorScheme="blue">{item.stat}</Badge>
+          <Heading size="md" color={tftColors.primary}>{item.name}</Heading>
+          <Badge bg={tftColors.secondary} color={tftColors.text}>{item.stat}</Badge>
         </VStack>
       </CardBody>
     </Card>
@@ -65,9 +78,9 @@ function ItemDetailDrawer({ isOpen, onClose, item }) {
   return (
     <Drawer isOpen={isOpen} placement="right" onClose={onClose} size="md">
       <DrawerOverlay />
-      <DrawerContent>
-        <DrawerCloseButton />
-        <DrawerHeader>{item.name}</DrawerHeader>
+      <DrawerContent bg={tftColors.background}>
+        <DrawerCloseButton color={tftColors.text} />
+        <DrawerHeader color={tftColors.primary}>{item.name}</DrawerHeader>
         <DrawerBody>
           <VStack spacing={4} align="start">
             <Image
@@ -77,16 +90,18 @@ function ItemDetailDrawer({ isOpen, onClose, item }) {
               objectFit="cover"
             />
             <Stat>
-              <StatLabel>Özellik</StatLabel>
-              <StatNumber>{item.stat}</StatNumber>
+              <StatLabel color={tftColors.secondary}>Özellik</StatLabel>
+              <StatNumber color={tftColors.text}>{item.stat}</StatNumber>
             </Stat>
-            <Divider />
-            <Text fontWeight="bold">Açıklama</Text>
-            <Text>{item.description}</Text>
-            <Divider />
-            <Text fontWeight="bold">Kullanım İpuçları</Text>
-            <Text>Bu eşya genellikle X, Y ve Z şampiyonlarında etkilidir.</Text>
-            <Button colorScheme="blue" mt={4}>Daha Fazla Bilgi</Button>
+            <Divider borderColor={tftColors.accent} />
+            <Text fontWeight="bold" color={tftColors.secondary}>Açıklama</Text>
+            <Text color={tftColors.text}>{item.description}</Text>
+            <Divider borderColor={tftColors.accent} />
+            <Text fontWeight="bold" color={tftColors.secondary}>Kullanım İpuçları</Text>
+            <Text color={tftColors.text}>Bu eşya genellikle X, Y ve Z şampiyonlarında etkilidir.</Text>
+            <Button bg={tftColors.primary} color={tftColors.text} mt={4} _hover={{ bg: tftColors.secondary }}>
+              Daha Fazla Bilgi
+            </Button>
           </VStack>
         </DrawerBody>
       </DrawerContent>
@@ -104,10 +119,12 @@ function ItemList() {
   };
 
   return (
-    <Box>
+    <Box bg={tftColors.background} p={5}>
       <Flex justify="space-between" align="center" mb={4}>
-        <Heading as="h2" size="xl">Temel Bileşen Eşyaları</Heading>
-        <Button colorScheme="teal">Tüm Eşyaları Göster</Button>
+        <Heading as="h2" size="xl" color={tftColors.primary}>Temel Bileşen Eşyaları</Heading>
+        <Button bg={tftColors.secondary} color={tftColors.text} _hover={{ bg: tftColors.accent }}>
+          Tüm Eşyaları Göster
+        </Button>
       </Flex>
       <SimpleGrid columns={{ base: 1, sm: 2, md: 3, lg: 4 }} spacing={6}>
         {baseItems.map((item, index) => (
