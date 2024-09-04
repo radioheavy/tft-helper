@@ -2,7 +2,7 @@
 /* eslint-disable no-undef */
 import React from 'react';
 import { ChakraProvider } from '@chakra-ui/react';
-import { TftProvider } from './contexts/TftContext';
+import { TftProvider } from './context/TftContext';
 import ChampionList from './components/ChampionList';
 import ItemList from './components/ItemList';
 import MetaComps from './components/MetaComps';
